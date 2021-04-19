@@ -43,7 +43,7 @@ export const login = (loginData) => async(dispatch) => {
     }
 }
 
-export const getProfile = () => async(dispatch) => {
+export const getAuthUser = () => async(dispatch) => {
     const token = localStorage.getItem('token')
     const config = {
         headers : {
@@ -51,17 +51,17 @@ export const getProfile = () => async(dispatch) => {
         }
     }
     dispatch({
-        type: ACTIONS.GET_PROFILE
+        type: ACTIONS.GET_AUTH_USER
     })
     try {
-        const profile = await axios.get('/user/current', config)
+        const authUser = await axios.get('/user/current', config)
         dispatch({
-            type: ACTIONS.GET_PROFILE_SUCCESS,
-            payload: profile.data
+            type: ACTIONS.GET_AUTH_USER_SUCCESS,
+            payload: authUser.data
         })
     } catch (err) {
         dispatch({
-            type: ACTIONS.GET_PROFILE_FAIL,
+            type: ACTIONS.GET_AUTH_USER_FAIL,
             payload: err.response.data.msg
         })
     }

@@ -11,7 +11,7 @@ const Register = () => {
     const isLoading = useSelector(state => state.userReducer.isLoading)
     const user = useSelector(state => state.userReducer.user)
     const errors = useSelector(state => state.userReducer.errors)
-
+    const isAuth = useSelector(state => state.userReducer.isAuth)
     const dispatch = useDispatch()
 
     const [name,setName] = useState('')
@@ -27,7 +27,7 @@ const Register = () => {
         }))
         history.push("/login")
     }
-
+    if(isAuth) return <Redirect to="/dashboard" />
     return (
         <div>
         {isLoading ? (<h5>Please wait ....</h5>)

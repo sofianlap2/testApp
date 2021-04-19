@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 const Header = () => {
 
     const dispatch = useDispatch()
-    const token = useSelector(state => state.userReducer.token)
+    const isAuth = useSelector(state => state.userReducer.isAuth)
 
     const handleSubmit = () => {
         dispatch(logout())
@@ -20,10 +20,10 @@ const Header = () => {
                 <li><Link to="/">Home</Link></li>
                 <li>
                 {
-                    token ?
+                    isAuth ?
                     <div>
                     <button onClick={handleSubmit}>logout</button>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/dashboard">Dashboard</Link>
                     </div>
                     :
                     <Link to="/register">Register</Link>

@@ -2,18 +2,18 @@ import React, { useState } from 'react'
 import './login.css'
 import { useDispatch, useSelector } from "react-redux"
 import { login } from '../../../../redux/actions/authAction'
-import { Link, Redirect } from "react-router-dom"
+import { Link, Redirect, useHistory } from "react-router-dom"
 import { showErrMsg, showSuccessMsg } from '../../../utils/notification/Notification'
 
 
 const Login = () => {
 
     const dispatch = useDispatch()
+    const history = useHistory()
 
-
-    const isLoading = useSelector(state => state.userReducer.isLoading)
-    const token = useSelector(state => state.userReducer.token)
     const errors = useSelector(state => state.userReducer.errors)
+    const isAuth = useSelector(state => state.userReducer.isAuth)
+    
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState()
@@ -24,17 +24,12 @@ const Login = () => {
             email,
             password
         }))
-        
+        history.push("/dashboard")
     }
 
-    return ( token ? 
-    <div>
-    <Redirect to="/profile" />
-    </div>
-    : 
-    isLoading ? (<h1>Please wait ...</h1>)
-    :
-    (
+    if(isAuth) return <Redirect to="/dashboard" />
+
+    return ( 
         <div>
             <h1>Login</h1>
             {errors && showErrMsg(errors)}
@@ -61,7 +56,7 @@ const Login = () => {
             </form>
             <p>Don't have an account? <Link to="/register">Register</Link></p>
         </div>
-    )
+    
     )
 }
 
