@@ -1,14 +1,16 @@
 
 import React, {useState} from 'react'
 import './register.css'
-import {Link,Redirect} from "react-router-dom"
+import {Link,Redirect,useHistory} from "react-router-dom"
 import {register} from "../../../../redux/actions/authAction"
 import {useDispatch,useSelector} from "react-redux"
+import { showErrMsg } from '../../../utils/notification/Notification'
 
 const Register = () => {
-
+    const history = useHistory()
     const isLoading = useSelector(state => state.userReducer.isLoading)
     const user = useSelector(state => state.userReducer.user)
+    const errors = useSelector(state => state.userReducer.errors)
 
     const dispatch = useDispatch()
 
@@ -23,16 +25,16 @@ const Register = () => {
             email,
             password
         }))
+        history.push("/login")
     }
 
     return (
         <div>
         {isLoading ? (<h5>Please wait ....</h5>)
             :
-            user ? <Redirect to="/login" />
-            :
             (<div>
             <h1>Register</h1>
+            {errors && showErrMsg(errors)}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input type="text"

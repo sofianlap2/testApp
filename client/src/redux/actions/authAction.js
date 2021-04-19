@@ -17,7 +17,7 @@ export const register = (formdata) => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: ACTIONS.REGISTER_USER_FAIL,
-            payload: err.response.data
+            payload: err.response.data.msg
         })
     }
 }
@@ -38,7 +38,7 @@ export const login = (loginData) => async(dispatch) => {
     } catch (err) {
         dispatch({
             type: ACTIONS.LOGIN_USER_FAIL,
-            payload: err.response.data
+            payload: err.response.data.msg
         })
     }
 }
@@ -62,10 +62,11 @@ export const getProfile = () => async(dispatch) => {
     } catch (err) {
         dispatch({
             type: ACTIONS.GET_PROFILE_FAIL,
-            payload: err.response.data
+            payload: err.response.data.msg
         })
     }
 }
+
 
 export const logout = () => dispatch => {
     dispatch({

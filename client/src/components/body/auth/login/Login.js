@@ -3,6 +3,7 @@ import './login.css'
 import { useDispatch, useSelector } from "react-redux"
 import { login } from '../../../../redux/actions/authAction'
 import { Link, Redirect } from "react-router-dom"
+import { showErrMsg, showSuccessMsg } from '../../../utils/notification/Notification'
 
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
 
     const isLoading = useSelector(state => state.userReducer.isLoading)
     const token = useSelector(state => state.userReducer.token)
+    const errors = useSelector(state => state.userReducer.errors)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState()
@@ -22,16 +24,21 @@ const Login = () => {
             email,
             password
         }))
+        
     }
 
-    return ( localStorage.getItem('token') ? 
+    return ( token ? 
+    <div>
     <Redirect to="/profile" />
+    </div>
     : 
     isLoading ? (<h1>Please wait ...</h1>)
     :
     (
         <div>
             <h1>Login</h1>
+            {errors && showErrMsg(errors)}
+            
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email">Email</label>
                 <input type="text"
