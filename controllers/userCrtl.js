@@ -64,9 +64,10 @@ const userCrtl = {
             return res.status(500).json({ msg: err.message })
         }
     },
-    getCurrent: (req, res) => {
+    getCurrent: async(req, res) => {
         try {
-            res.json(req.user)
+            const response = await User.findById(req.user.id).select('-passwordHash')
+            res.json(response)
         } catch (err) {
             res.status(500).json({ msg: err.message })
         }

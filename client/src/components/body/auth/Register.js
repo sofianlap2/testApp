@@ -1,38 +1,31 @@
-import React, {useState} from 'react'
-import {useDispatch,useSelector} from "react-redux"
-import {Redirect} from "react-router-dom"
-import {register} from "../../../redux/actions/authAction"
-import {showErrMsg} from "../../utils/notification/Notification"
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import { Redirect } from "react-router-dom"
+import { register } from "../../../redux/actions/authAction"
 import "./register.css"
 
 const Register = () => {
     const dispatch = useDispatch()
-    const errors = useSelector((state)=> state.userReducer.errors)
-    const isAuth = useSelector((state)=> state.userReducer.isAuth)
-    const [name,setName] = useState('')
+    const isAuth = useSelector((state) => state.userReducer.isAuth)
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [password,setPassword] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        try {
-            dispatch(register({
-                name,
-                email,
-                password
-            }))
-            
-        } catch (err) {
-            console.error(err)
-        }
+        dispatch(register({
+            name,
+            email,
+            password
+        }))
     }
-    
-    if(isAuth) return <Redirect to="/dashboard" />
+
+    if (isAuth) return <Redirect to="/dashboard" />
 
     return (
         <div>
             <h1>Register</h1>
-            {errors && showErrMsg(errors)}
+
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input type="text"

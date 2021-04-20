@@ -8,42 +8,6 @@ export const userLoading = () => dispatch => {
     })
 }
 
-
-export const register = (registerData) => async(dispatch) => {
-    dispatch(userLoading())
-
-    try {
-        const res = await axios.post("/user/register", registerData)
-        dispatch({
-            type: ACTIONS.REGISTER_SUCCESS,
-            payload : res.data.token
-        })
-    } catch (err) {
-        dispatch({
-            type: ACTIONS.REGISTER_FAIL,
-            payload: err.response.data.msg
-        })
-    }
-}
-
-export const login = (loginData) => async(dispatch) => {
-    dispatch(userLoading())
-
-    try {
-        const res = await axios.post("/user/login", loginData)
-        dispatch({
-            type: ACTIONS.LOGIN_SUCCESS,
-            payload: res.data.token
-        })
-    } catch (err) {
-        dispatch({
-            type: ACTIONS.LOGIN_FAIL,
-            payload: err.response.data.msg
-        })
-        dispatch(setAlert(err.response.data.msg))
-    }
-}
-
 export const getAuthUser = () => async (dispatch) => {
 
     const config = {
@@ -51,8 +15,6 @@ export const getAuthUser = () => async (dispatch) => {
           'Authorization': localStorage.getItem('token'),
         },
       };
-    dispatch(userLoading())
-
     try {
         const res = await axios.get('/user/current', config)
         dispatch({
@@ -66,6 +28,46 @@ export const getAuthUser = () => async (dispatch) => {
         })
     }
 }
+
+export const register = (registerData) => async(dispatch) => {
+    dispatch(userLoading())
+
+    try {
+        const res = await axios.post("/user/register", registerData)
+        dispatch({
+            type: ACTIONS.REGISTER_SUCCESS,
+            payload : res.data.token
+        })
+        dispatch(getAuthUser())
+    } catch (err) {
+        dispatch({
+            type: ACTIONS.REGISTER_FAIL,
+
+        })
+        if(err){dispatch(setAlert(err.response.data.msg))}
+    }
+}
+
+export const login = (loginData) => async(dispatch) => {
+    dispatch(userLoading())
+
+    try {
+        const res = await axios.post("/user/login", loginData)
+        await dispatch({
+            type: ACTIONS.LOGIN_SUCCESS,
+            payload: res.data.token
+        })
+        dispatch(getAuthUser())
+    } catch (err) {
+        dispatch({
+            type: ACTIONS.LOGIN_FAIL,
+            
+        })
+       if(err) {dispatch(setAlert(err.response.data.msg))}
+    }
+}
+
+
 
 export const logout = () => async dispatch => {
     localStorage.removeItem('token')

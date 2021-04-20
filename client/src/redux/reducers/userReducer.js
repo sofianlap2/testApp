@@ -4,9 +4,7 @@ import ACTIONS from "../actions/index"
 const initialState = {
     token: localStorage.getItem('token'),
     isLoading: false,
-    errors: null,
     isAuth: false,
-
 };
 
 const userReducer = (state = initialState, { type, payload }) => {
@@ -28,7 +26,8 @@ const userReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 isLoading: false,
-                isAuth: true
+                isAuth: true,
+                ...payload
             }
         case ACTIONS.GET_AUTH_USER_FAIL:
             return {
@@ -42,7 +41,7 @@ const userReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 isLoading: false,
-                errors: payload
+                
             }
         case ACTIONS.LOGOUT:
             return {
@@ -50,7 +49,8 @@ const userReducer = (state = initialState, { type, payload }) => {
                 isLoading: false,
                 isAuth: false,
                 token: null,
-                errors: null
+                errors: null,
+                user: null
             }
         
         default:
