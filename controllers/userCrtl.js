@@ -1,19 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const User = require("../models/User")
-const gravatar =require('gravatar')
+const gravatar = require('gravatar')
 
 
 const userCrtl = {
-    Register: async(req,res) => {
-        const {name,email,password} = req.body
+    Register: async (req, res) => {
+        const { name, email, password } = req.body
         try {
-            if(!email || !password || !name) return res.status(400).json({msg: "Please enter all fields"})
-            if(!validateEmail(email)) return res.status(400).json({msg: "Please verify your email address"})
-            if(password.length < 6 ) return res.status(400).json({msg: "Password must be at least with 6 characters"})
+            if (!email || !password || !name) return res.status(400).json({ msg: "Please enter all fields" })
+            if (!validateEmail(email)) return res.status(400).json({ msg: "Please verify your email address" })
+            if (password.length < 6) return res.status(400).json({ msg: "Password must be at least with 6 characters" })
 
-            const existingUser = await User.findOne({email})
-            if(existingUser) return res.status(400).json({msg: "This email is already registred"})
+            const existingUser = await User.findOne({ email })
+            if (existingUser) return res.status(400).json({ msg: "This email is already registred" })
 
             const salt = await bcrypt.genSalt(10)
             const passwordHashed = await bcrypt.hash(password, salt)
@@ -27,54 +27,48 @@ const userCrtl = {
                 avatar
             })
             const savedUser = await newUser.save()
-            res.json(savedUser)
-
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-        }
-    },
-    Login: async(req,res)=> {
-        const {email,password} = req.body
-
-        try {
-            if(!email || !password) return res.status(400).json({msg: "Please enter all fields"})
-            
-            const existingUser = await User.findOne({email})
-            if(!existingUser) return res.status(400).json({msg: "Invalid credentials"})
-
-            const isMatch = await bcrypt.compare(password, existingUser.passwordHash)
-            if(!isMatch) return res.status(400).json({msg: "Invalid credentials"})
-
-            
-
             const payload = {
-                id: existingUser._id,
-                name: existingUser.name,
-                email: existingUser.email,
-                role: existingUser.role,
-                avatar: existingUser.avatar
+                id: savedUser._id,
             }
-
-            jwt.sign(payload, process.env.JWT_SECRET, (err,token) => {
-                if(err) throw err;
-                res.json({token: token})
+            jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
+                if (err) throw err;
+                res.json({ token: token })
             })
 
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({ msg: err.message })
         }
     },
-    getCurrent: (req,res)=>{ try {
-        res.json(req.user)
-    } catch (err) {
-        res.status(500).json({msg: err.message})
-    }},
-    getAllUsers: async(req,res)=> {
+    Login: async (req, res) => {
+        const { email, password } = req.body
+
         try {
-            const users = await User.find()
-            res.json(users)
+            if (!email || !password) return res.status(400).json({ msg: "Please enter all fields" })
+
+            const existingUser = await User.findOne({ email })
+            if (!existingUser) return res.status(400).json({ msg: "Invalid credentials" })
+
+            const isMatch = await bcrypt.compare(password, existingUser.passwordHash)
+            if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" })
+
+            const payload = {
+                id: existingUser._id,
+            }
+
+            jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
+                if (err) throw err;
+                res.json({ token: token })
+            })
+
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+    getCurrent: (req, res) => {
+        try {
+            res.json(req.user)
+        } catch (err) {
+            res.status(500).json({ msg: err.message })
         }
     }
 }

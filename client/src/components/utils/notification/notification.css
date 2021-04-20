@@ -1,0 +1,7 @@
+.error_msg{
+    background-color: red;
+    color: white;
+}
+.delete_msg{
+    display: none;
+}

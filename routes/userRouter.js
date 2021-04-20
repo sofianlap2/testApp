@@ -10,7 +10,6 @@ router.post('/login', userCrtl.Login)
 
 router.get('/current', isAuth, userCrtl.getCurrent)
 
-router.get('/allUsers',isAdmin, userCrtl.getAllUsers )
 
 
 module.exports = router
