@@ -9,6 +9,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 app.use('/user', require("./routes/userRouter"))
+app.use('/profile', require("./routes/profileRouter"))
 
 const PORT = process.env.PORT || 5000
 

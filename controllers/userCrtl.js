@@ -71,6 +71,36 @@ const userCrtl = {
         } catch (err) {
             res.status(500).json({ msg: err.message })
         }
+    },
+    getAllUsers: async(req,res) => {
+        try {
+            const users = await User.find().select('-passwordHash')
+            res.json(users)
+        } catch (err) {
+            res.status(500).json({ msg: err.message })
+        }
+    },
+    deleteUser: async(req,res)=> {
+        const id = req.params.userId
+        try {
+            const user = await User.findByIdAndDelete(id)
+            if(!user) return res.status(400).json({msg: "User not found"})
+            res.json('delete succesfully')
+        } catch (err) {
+            res.status(500).json({ msg: err.message })
+        } 
+    },
+    editUser : async(req,res) => {
+        const id = req.params.userId
+        try {
+            const user = await User.findByIdAndUpdate(id, req.body, {new:true})
+            if (!user) {
+                return res.status(404).send({ msg: "User Not Found " });
+              }
+            res.json(user)
+        } catch (err) {
+            res.status(500).json({ msg: err.message })
+        }
     }
 }
 
