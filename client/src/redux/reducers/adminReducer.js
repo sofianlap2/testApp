@@ -3,7 +3,8 @@ import ACTIONS from "../actions/index"
 
 const initialState = {
     isLoading: false,
-    users: []
+    users: null,
+    profiles: null
 };
 
 const adminReducer = (state = initialState, { type, payload }) => {
@@ -13,6 +14,12 @@ const adminReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 isLoading: false,
                 users: payload
+            }
+        case ACTIONS.GET_ALL_PROFILES_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profiles: payload
             }
         case ACTIONS.GET_ALL_USERS_FAIL:
         case ACTIONS.EDIT_USER_FAIL:
@@ -26,11 +33,29 @@ const adminReducer = (state = initialState, { type, payload }) => {
                 isLoading: false,
                 users: state.users.filter((user) => user._id !== payload)
             }
+        case ACTIONS.DELETE_PROFILE_AND_USER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                users: state.users.filter((user) => user._id !== payload),
+                profiles: state.profiles.filter((profile) => profile.user !== payload)
+            }
         case ACTIONS.EDIT_USER_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                users: state.users.map((user) => user._id === payload._id ? { ...user, name:payload.name, email: payload.email, role: payload.role, avatar: payload.avatar } : user)
+                users: state.users.map((user) => user._id === payload._id ? { ...user, name: payload.name, email: payload.email, role: payload.role, avatar: payload.avatar } : user)
+            }
+        case ACTIONS.GET_ALL_PROFILES_FAIL:
+            return {
+                ...state,
+                isLoading: false,
+                profiles: null
+            }
+        case ACTIONS.DELETE_PROFILE_AND_USER_FAIL:
+            return {
+                ...state,
+                isLoading: false,
             }
         default:
             return state;

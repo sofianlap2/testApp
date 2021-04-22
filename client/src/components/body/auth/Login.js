@@ -8,7 +8,7 @@ const Login = () => {
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const isAuth = useSelector((state)=> state.userReducer.isAuth)
+    const isAuth = useSelector((state)=> state.authReducer.isAuth)
     
     const handleSubmit = (e) => {
         e.preventDefault()

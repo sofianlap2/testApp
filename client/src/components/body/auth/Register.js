@@ -6,7 +6,7 @@ import "./register.css"
 
 const Register = () => {
     const dispatch = useDispatch()
-    const isAuth = useSelector((state) => state.userReducer.isAuth)
+    const isAuth = useSelector((state) => state.authReducer.isAuth)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

@@ -12,6 +12,8 @@ router.get("/all", isAdmin, profileCrtl.getAllProfiles)
 
 router.delete("/delete", isAdmin, profileCrtl.deleteProfileUser)
 
+router.delete("/delete/:userId", isAdmin, profileCrtl.deleteProfileAndUser)
+
 router.put("/experience", isAuth, profileCrtl.addExperience)
 
 router.delete("/experience/:expId", isAuth, profileCrtl.deleteExperience)

@@ -1,6 +1,7 @@
 import ACTIONS from "./index";
 import axios from "axios";
 import {setAlert} from "./alert"
+import { getProfile } from "./userAction";
 
 export const userLoading = () => dispatch => {
     dispatch({
@@ -21,11 +22,16 @@ export const getAuthUser = () => async (dispatch) => {
             type: ACTIONS.GET_AUTH_USER_SUCCESS,
             payload: res.data
         })
+        
     } catch (err) {
-        dispatch({
-            type: ACTIONS.GET_AUTH_USER_FAIL,
-            payload: err.response.data.msg
-        })
+        if(err.response.data) {
+            dispatch({
+                type: ACTIONS.GET_AUTH_USER_FAIL,
+                payload: err.response.data.msg
+            })
+             console.error(err.response.data)
+        }
+        
     }
 }
 
@@ -74,5 +80,6 @@ export const logout = () => async dispatch => {
     dispatch({
         type:ACTIONS.LOGOUT
     })
+    
 }
 

@@ -12,7 +12,6 @@ const profileCrtl = {
             if(!status || !skills) return res.status(400).json({msg: "Skills and status are required"})
 
         const profileFiels = {
-            user : req.user.id,
             status,
             website: 
             website && website !== ""?
@@ -50,7 +49,8 @@ const profileCrtl = {
             const profile = await Profile.findOne(
                 {user: req.user.id}
             ).populate('user', ['name',"avatar"])
-            res.json(profile)
+            if(!profile) return res.status(400).json({err: false})
+            res.json({profile: profile, err:true})
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
@@ -71,6 +71,18 @@ const profileCrtl = {
                 User.findOneAndRemove({_id: req.user.id})
             ])
             res.json({msg : "User deleted"})
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+    deleteProfileAndUser: async(req,res)=> {
+        id= req.params.userId
+        try {
+            await Promise.all([
+                Profile.findOneAndRemove({user: id}),
+                User.findByIdAndRemove(id)
+            ])
+            res.json({msg : "User and profile deleted"})
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }

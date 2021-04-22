@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
  
-  const isAuth = useSelector((state) => state.userReducer.isAuth);
+  const isAuth = useSelector((state) => state.authReducer.isAuth);
   if (!isAuth) {
     return <Redirect to="/login" />;
   } else return <Route  component={Component} {...rest} />;

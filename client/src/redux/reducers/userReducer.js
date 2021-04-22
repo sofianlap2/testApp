@@ -2,57 +2,27 @@ import ACTIONS from "../actions/index"
 
 
 const initialState = {
-    token: localStorage.getItem('token'),
-    isLoading: false,
-    isAuth: false,
+    profile: null,
 };
 
 const userReducer = (state = initialState, { type, payload }) => {
     switch (type) {
-        case ACTIONS.USER_LOADING:
+        case ACTIONS.ADD_PROFILE_SUCCESS:
             return {
                 ...state,
-                isLoading: true
             }
-        case ACTIONS.REGISTER_SUCCESS:
-        case ACTIONS.LOGIN_SUCCESS:
-            localStorage.setItem('token', payload)
+        case ACTIONS.GET_PROFILE_SUCCESS:
             return {
                 ...state,
-                isLoading: false,
-                isAuth: true
+                profile: payload.data,
+                isProfile: payload.err
             }
-        case ACTIONS.GET_AUTH_USER_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                isAuth: true,
-                ...payload
-            }
-        case ACTIONS.GET_AUTH_USER_FAIL:
-            return {
-                ...state,
-                isLoading: false,
-                errors: payload,
-                isAuth: false
-            }
-        case ACTIONS.REGISTER_FAIL:
-        case ACTIONS.LOGIN_FAIL:
-            return {
-                ...state,
-                isLoading: false,
-                
-            }
-        case ACTIONS.LOGOUT:
-            return {
-                ...state,
-                isLoading: false,
-                isAuth: false,
-                token: null,
-                errors: null,
-                user: null
-            }
-        
+        case ACTIONS.ADD_PROFILE_FAIL:
+        case ACTIONS.GET_PROFILE_FAIL:
+                return {
+                    ...state,
+                    profile: null
+                }
         default:
             return state;
     }
