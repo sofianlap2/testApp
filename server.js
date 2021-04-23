@@ -10,6 +10,7 @@ app.use(express.json())
 
 app.use('/user', require("./routes/userRouter"))
 app.use('/profile', require("./routes/profileRouter"))
+app.use('/posts', require("./routes/postRouter"))
 
 const PORT = process.env.PORT || 5000
 

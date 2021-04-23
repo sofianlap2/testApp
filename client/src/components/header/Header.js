@@ -17,6 +17,7 @@ const Header = () => {
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
             <Link to="/dashboard">Dashboard</Link>
+            <Link to="/posts" >Posts</Link>
             <button onClick={logoutSubmit}>Logout</button>
         </div>
     )

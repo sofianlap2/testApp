@@ -10,6 +10,7 @@ import Alert from "./components/utils/notification/Alert";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute"
 import Dashboard from './components/body/dashboard/Dashboard';
 import DashboardAdmin from './components/body/dashboard/DashboardAdmin';
+import Posts from "./components/body/posts/Posts"
 
 const App = () => {
    const dispatch = useDispatch()
@@ -28,6 +29,7 @@ const App = () => {
         <Route component={Login} path="/login" exact/>
         <PrivateRoute component={Dashboard} path="/dashboard" exact />
         <PrivateRoute component={DashboardAdmin} path="/dashboard_admin" exact />
+        <PrivateRoute component={Posts} path="/posts" exact />
       </Switch>
     </Router>
   )

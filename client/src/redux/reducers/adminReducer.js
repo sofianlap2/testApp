@@ -38,7 +38,6 @@ const adminReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 isLoading: false,
                 users: state.users.filter((user) => user._id !== payload),
-                profiles: state.profiles.filter((profile) => profile.user !== payload)
             }
         case ACTIONS.EDIT_USER_SUCCESS:
             return {

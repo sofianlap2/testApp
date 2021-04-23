@@ -97,11 +97,11 @@ export const delProfileandUser = (id) => async(dispatch) => {
       };
     try {
         const profile = await axios.delete(`profile/delete/${id}`, config)
-        dispatch({
+         dispatch({
             type: ACTIONS.DELETE_PROFILE_AND_USER_SUCCESS,
             payload: id
         })
-        
+        dispatch(getAllProfiles())
     } catch (err) {
         dispatch({
             type: ACTIONS.DELETE_PROFILE_AND_USER_FAIL
